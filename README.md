@@ -1,0 +1,1 @@
+This is my project that was made to show how to create a real e-commerce app. All my steps you can see in t.me/ECommerceStartProject.
