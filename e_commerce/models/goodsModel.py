@@ -5,8 +5,10 @@ from sqlalchemy.orm import Mapped, mapped_column
 from e_commerce.database import Base
 
 
-class Users(Base):
-    __tablename__ = "users"
+class Goods(Base):
+    __tablename__ = "goods"
 
     id: Mapped[ui.UUID] = mapped_column(primary_key=True)
-    username: Mapped[str] = mapped_column(nullable=False)
+    name: Mapped[str] = mapped_column(nullable=False)
+    type: Mapped[str] = mapped_column(nullable=False)
+    

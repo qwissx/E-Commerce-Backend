@@ -1,4 +1,4 @@
-from typing import Optional
+import uuid as ui
 
 from pydantic import BaseModel
 
@@ -8,10 +8,5 @@ class SUserCreate(BaseModel):
 
 
 class SUserDisplay(BaseModel):
-    id: int
+    id: ui.UUID
     username: str
-
-
-class SUserDelete(BaseModel):
-    id: Optional[int]
-    username: Optional[str]

@@ -1,3 +1,5 @@
+import uuid as ui
+
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -20,18 +22,18 @@ async def create_user(
 
 @users_router.get(path="/{user_id}")
 async def get_user(
-    user_id: int,
+    user_id: ui.UUID,
     connection: AsyncSession = Depends(session_getter),
 ) -> uS.SUserDisplay:
     user = await UsersRepository.get(connection, id=user_id)
     return user
 
 
-@users_router.delete(path="/")
+@users_router.delete(path="/{user_id}")
 async def del_user(
-    filter_by: uS.SUserDelete,
+    user_id: ui.UUID,
     connection: AsyncSession = Depends(session_getter),
 ) -> dict[str, str]:
-    await UsersRepository.rem(connection, **filter_by.model_dump())
+    await UsersRepository.rem(connection, id=user_id)
     await connection.commit()
     return {"message": "user was successfully deleted"}
