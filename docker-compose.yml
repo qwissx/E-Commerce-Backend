@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["/app/e_commerce/app.sh"]
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - DB_NAME=default_db
+      - DB_USER=gen_user
+      - DB_PORT=5432
+      - DB_HOST=db
+      - DB_PASS=:&Y=0<^7t0=V,(
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=default_db
+      - POSTGRES_USER=gen_user
+      - POSTGRES_PASSWORD=:&Y=0<^7t0=V,(
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+
+volumes:
+  postgres_data:

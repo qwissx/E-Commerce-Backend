@@ -29,6 +29,14 @@ async def get_good(
     return good
 
 
+@goods_router.get(path="/all")
+async def get_all_goods(
+    connection: AsyncSession = Depends(session_getter),
+) -> list[gS.SGoodDisplay]:
+    goods = await GoodsRepository.get_all(connection)
+    return goods
+
+
 @goods_router.delete(path="/{good_id}")
 async def del_good(
     good_id: ui.UUID,
