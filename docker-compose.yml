@@ -5,7 +5,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: ["/app/e_commerce/app.sh"]
+    command: ["/app/scripts/app.sh"]
+    image: api-im
+    container_name: api
     ports:
       - "8000:8000"
     env_file:
@@ -21,6 +23,7 @@ services:
 
   db:
     image: postgres:15
+    container_name: postgres
     environment:
       - POSTGRES_DB=default_db
       - POSTGRES_USER=gen_user

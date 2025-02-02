@@ -9,8 +9,8 @@ class GoodsRepository(mR.MixinRepository):
     model_name = gM.Goods
 
     @classmethod
-    async def get_all(cls, connection: AsyncSession, limit = 10, **filter_by) -> list[gM.Goods]:
-        query = select(cls.model_name).filter_by(**filter_by).limit(limit)
+    async def get_all(cls, connection: AsyncSession, limit=10) -> list[gM.Goods]:
+        query = select(cls.model_name).limit(limit)
         goods = await connection.execute(query)
         return goods.scalars().all()
     

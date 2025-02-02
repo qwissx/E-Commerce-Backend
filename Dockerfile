@@ -10,6 +10,6 @@ COPY . .
 
 EXPOSE 8000
 
-RUN chmod a+x /app/e_commerce/*.sh
+RUN chmod a+x /app/scripts/app.sh
 
 CMD ["uvicorn", "e_commerce.main:api", "--host", "0.0.0.0", "--port", "8000", "--reload"]

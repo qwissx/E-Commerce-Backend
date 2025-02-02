@@ -10,9 +10,11 @@ class MixinRepository(bR.BaseRepository):
     model_name = None
 
     @classmethod
-    async def add(cls, connection: AsyncSession, **data) -> None:
-        query = insert(cls.model_name).values(id=ui.uuid4(), **data)
+    async def add(cls, connection: AsyncSession, **data) -> ui.UUID:
+        new_id = ui.uuid4()
+        query = insert(cls.model_name).values(id=new_id, **data)
         await connection.execute(query)
+        return new_id
 
     @classmethod
     async def get(cls, connection: AsyncSession, **filter_by):

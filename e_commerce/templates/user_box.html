@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Товары</title>
+    <title>Товары пользователя</title>
     <style>
         body {
             background-color: #d2b48c;
@@ -24,27 +24,18 @@
             border-radius: 10px;
             box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
         }
-
-        h1 {
-            font-family: sans-serif;
-            color: chocolate;
-        }
-
-        h4 {
-            font-family: sans-serif;
-            color: chocolate;
-        }
     </style>
 </head>
 <body>
+    <h1 style="color: chocolate; text-align: center;">Корзина пользователя {{user.username}}</h1>
     <div>
-        {% for good in goods %}
+        {% for good in user_box %}
         <div class="framed-div">
             <img src="{{ url_for('static', path='images/' + good.id|string + '.webp')}}", alt="Фото товара", width="300">  
-            <p>  
-                <h1>Название товара: {{good.name}}</h1>
-                <h4>Тип товара: {{good.type}}</h4>
-            </p>
+                <p>  
+                    <h1 style="color: chocolate;">Название товара: {{good.good_name}}</h1>
+                    <h4 style="color: chocolate;">Тип товара: {{good.good_type}}</h4>
+                </p>
         </div>
         {% endfor %}
     </div>
