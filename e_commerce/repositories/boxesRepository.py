@@ -4,12 +4,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from e_commerce.models import boxesModel as bM
 from e_commerce.repositories import mixinRepository as mR
 from e_commerce.models import goodsModel as gM
+from e_commerce.decorators.repositoriesDecorator import SQLErrorHandrel
 
 
 class BoxesRepository(mR.MixinRepository):
     model_name = bM.Boxes
 
     @classmethod
+    @SQLErrorHandrel
     async def get(cls, connection: AsyncSession, user_id) -> list[gM.Goods]:
         """
         SELECT goods.id, goods.name, goods.price
