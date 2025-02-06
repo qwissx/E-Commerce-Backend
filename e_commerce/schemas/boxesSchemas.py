@@ -1,14 +1,12 @@
-import uuid as ui
-
-from pydantic import BaseModel
+from pydantic import BaseModel, UUID4
 
 
 class SBoxCreate(BaseModel):
-    user_id: ui.UUID
-    good_id: ui.UUID
+    user_id: UUID4
+    good_id: UUID4
 
 
 class SBoxDisplay(BaseModel):
-    id: ui.UUID
+    id: UUID4
     good_name: str
     good_type: str

@@ -8,16 +8,23 @@ from e_commerce.routers import boxesRouter as bR
 from e_commerce.routers import goodsRouter as gR
 from e_commerce.routers import pagesRouter as pR
 from e_commerce.routers import imagesRouter as iR
+from e_commerce.routers import authRouter as aR
+from e_commerce.routers import userInfoRouter as uiR
 from e_commerce.logger import logger
+from e_commerce.database import lifespan
 
 
-api = FastAPI(docs_url="/")
+api = FastAPI(docs_url="/", lifespan=lifespan)
+
 
 api.mount("/static", StaticFiles(directory="e_commerce/static"), "static")
 
+
+api.include_router(aR.reg_router)
 api.include_router(uR.users_router)
 api.include_router(bR.boxes_router)
 api.include_router(gR.goods_router)
+api.include_router(uiR.users_info_router)
 api.include_router(pR.pages_router)
 api.include_router(iR.images_router)
 

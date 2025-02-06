@@ -8,6 +8,7 @@ from e_commerce.database import Base
 from e_commerce.models.usersModel import Users
 from e_commerce.models.goodsModel import Goods
 from e_commerce.models.boxesModel import Boxes
+from e_commerce.models.usersInfoModel import UsersInfo
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

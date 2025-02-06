@@ -1,6 +1,4 @@
-import uuid as ui
-
-from pydantic import BaseModel
+from pydantic import BaseModel, UUID4
 
 
 class SGoodCreate(BaseModel):
@@ -9,6 +7,6 @@ class SGoodCreate(BaseModel):
 
 
 class SGoodDisplay(BaseModel):
-    id: ui.UUID
+    id: UUID4
     name: str
     type: str

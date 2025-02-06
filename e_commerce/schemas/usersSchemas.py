@@ -1,12 +1,17 @@
-import uuid as ui
-
-from pydantic import BaseModel
+from pydantic import BaseModel, UUID4
 
 
 class SUserCreate(BaseModel):
     username: str
+    password: str
 
 
 class SUserDisplay(BaseModel):
-    id: ui.UUID
+    id: UUID4
     username: str
+    password: str
+
+
+class SUserAuth(BaseModel):
+    username: str
+    password: str
