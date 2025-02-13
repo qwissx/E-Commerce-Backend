@@ -54,7 +54,7 @@ async def user_del_himself(
     connection: AsyncSession = Depends(session_getter),
 ) -> dict[str, str]:
     if not await UsersRepository.get(connection, id=user.id):
-        logger_add_info(del_user.__name__, user_id=user.id)
+        logger_add_info(user_del_himself.__name__, user_id=user.id)
         raise SQLExc.CannotDeleteUser
 
     await uiR.del_user_info(user.id, connection) # вернуться
@@ -65,12 +65,12 @@ async def user_del_himself(
 
 # на правах админа
 @users_router.delete(path="/{user_id}")
-async def user_del_himself(
+async def user_del(
     user_id: ui.UUID, 
     connection: AsyncSession = Depends(session_getter),
 ) -> dict[str, str]:
     if not await UsersRepository.get(connection, id=user_id):
-        logger_add_info(del_user.__name__, user_id=user_id)
+        logger_add_info(user_del.__name__, user_id=user_id)
         raise SQLExc.CannotDeleteUser
 
     await uiR.del_user_info(user_id, connection) # вернуться

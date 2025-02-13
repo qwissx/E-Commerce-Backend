@@ -59,13 +59,13 @@ async def update_user_info(
 
     return {"message": "success"}
 
-# на правах админа
+
 @users_info_router.delete(path="/{user_id}")
 async def del_user_info(
     user_id: ui.UUID,
     connection: AsyncSession = Depends(session_getter),
 ) -> dict[str, str]:
-    if not await UserInfoRepository.get(connection, username): # добавит username при создании авторизации
+    if not await UserInfoRepository.get(connection, user_id=user_id):
         logger_add_info(del_user_info.__name__, user_id=user_id)
         raise SQLExc.CannotDeleteUserInfo
 

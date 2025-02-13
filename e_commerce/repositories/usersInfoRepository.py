@@ -14,8 +14,7 @@ class UserInfoRepository(mR.MixinRepository):
         """
         SELECT users.id, users.username, users.password, ui.email, ui.phone_number
         FROM users_info ui
-        JOIN users ON users.id = users_info.user_id
-        WHERE users.username = :username;
+        JOIN users ON users.id = users_info.user_id;
         """
         query = (
             select(

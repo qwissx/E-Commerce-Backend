@@ -48,3 +48,14 @@ async def login_user(
     access_token = aD.create_access_token({"sub": str(user.id), "username": user.username})
     response.set_cookie("access_token", access_token, httponly=True)
     return {"message": "access is open"}
+
+
+@reg_router.post("/logout")
+async def log_out_user(
+    response: Response,
+    connection: AsyncSession = Depends(session_getter),
+) -> dict[str, str]:
+    response.delete_cookie("access_token")
+
+    return {"message": "access is denied"}
+    
