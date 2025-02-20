@@ -11,6 +11,7 @@ from fastapi_cache.backends.redis import RedisBackend
 from fastapi_cache.decorator import cache
 from redis import asyncio as aioredis
 from redis.asyncio import Redis
+from celery import Celery
 
 from e_commerce import settings as st
 
@@ -37,3 +38,10 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
 
 
 redisDB = Redis(host=st.redis_host, port=st.redis_port, db=0)
+
+
+broker = Celery(
+    "tasks", 
+    broker=st.rabbit_url,
+    include=["e_commerce.tasks.tasks"],
+)

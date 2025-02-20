@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi_cache.decorator import cache
 
-from e_commerce.database import session_getter
+from e_commerce.connections import session_getter
 from e_commerce.repositories.boxesRepository import BoxesRepository
 from e_commerce.schemas import boxesSchemas as bS
 from e_commerce.dependencies.logger import logger_add_info
@@ -51,7 +51,7 @@ async def del_box(
     connection: AsyncSession = Depends(session_getter),
 ) -> dict[str, str]:
     if not await BoxesRepository.get(connection, user_id=user.id):
-        logger_add_info(del_box.__name__, box_id=box_id)
+        logger_add_info(del_box.__name__, good_id=good_id)
         raise SQLExc.CannotFindBox
 
     await BoxesRepository.rem(connection, user_id=user.id, good_id=good_id)

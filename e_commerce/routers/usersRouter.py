@@ -2,10 +2,9 @@ import uuid as ui
 
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi_cache.decorator import cache
 from sqlalchemy.exc import SQLAlchemyError
 
-from e_commerce.database import session_getter
+from e_commerce.connections import session_getter
 from e_commerce.repositories.usersRepository import UsersRepository
 from e_commerce.schemas import usersSchemas as uS
 from e_commerce.exceptions import SQLExc
@@ -35,7 +34,6 @@ async def create_user(
 
 
 @users_router.get(path="/")
-@cache(expire=60)
 async def get_user(
     user: Users = Depends(uD.get_current_user), 
     connection: AsyncSession = Depends(session_getter),

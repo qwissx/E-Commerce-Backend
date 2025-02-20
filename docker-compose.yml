@@ -13,13 +13,21 @@ services:
     env_file:
       - .env
     environment:
+      - LOG_LEVEL=INFO
+
+      - SECRET=secret
+      - HASH=hash
       - DB_NAME=default_db
       - DB_USER=gen_user
       - DB_PORT=5432
       - DB_HOST=db
       - DB_PASS=:&Y=0<^7t0=V,(
+
+      - REDIS_HOST=cache
+      - REDIS_PORT=6379
     depends_on:
       - db
+      - redis
 
   db:
     image: postgres:15
@@ -33,6 +41,15 @@ services:
     ports:
       - "5432:5432"
 
+  cache:
+    image: redis:7 
+    container_name: redis 
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data 
+
 
 volumes:
   postgres_data:
+  redis_data:  

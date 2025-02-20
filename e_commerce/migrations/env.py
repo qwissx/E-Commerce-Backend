@@ -4,7 +4,7 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 
 from e_commerce import settings as st
-from e_commerce.database import Base
+from e_commerce.connections import Base
 from e_commerce.models.usersModel import Users
 from e_commerce.models.goodsModel import Goods
 from e_commerce.models.boxesModel import Boxes

@@ -11,7 +11,7 @@ from e_commerce.routers import imagesRouter as iR
 from e_commerce.routers import authRouter as aR
 from e_commerce.routers import userInfoRouter as uiR
 from e_commerce.logger import logger
-from e_commerce.database import lifespan
+from e_commerce.connections import lifespan
 
 
 api = FastAPI(docs_url="/", lifespan=lifespan)
@@ -27,6 +27,7 @@ api.include_router(gR.goods_router)
 api.include_router(uiR.users_info_router)
 api.include_router(pR.pages_router)
 api.include_router(iR.images_router)
+
 
 @api.middleware("http")
 async def add_process_time_heade(request: Request, call_next):

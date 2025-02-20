@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_cache.decorator import cache
 from sqlalchemy.exc import SQLAlchemyError
 
-from e_commerce.database import session_getter
+from e_commerce.connections import session_getter
 from e_commerce.repositories.goodsRepository import GoodsRepository
 from e_commerce.schemas import goodsSchemas as gS
 from e_commerce.dependencies.goods import remove_image

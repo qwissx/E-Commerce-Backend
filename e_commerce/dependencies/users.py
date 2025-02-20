@@ -9,7 +9,7 @@ from e_commerce.exceptions import AuthExc, SQLExc
 from e_commerce import settings as st
 from e_commerce.dependencies.auth import get_password_hash, check_access_token
 from e_commerce.repositories.usersRepository import UsersRepository
-from e_commerce.database import session_getter
+from e_commerce.connections import session_getter
 from e_commerce.dependencies import cache as ca
 from e_commerce.schemas import usersSchemas as uS
 
@@ -58,7 +58,7 @@ async def get_current_user(
             password=user.password
         )
     except AttributeError:
-        raise SQLExc.CannotDeleteUser
+        raise AuthExc.UserDoesNotExist
 
     return user
     

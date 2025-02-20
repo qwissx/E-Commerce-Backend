@@ -1,6 +1,6 @@
 import pytest_asyncio
 
-from e_commerce.database import Base, engine
+from e_commerce.connections import Base, engine
 
 
 @pytest_asyncio.fixture

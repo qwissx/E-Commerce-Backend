@@ -2,7 +2,7 @@ import uuid as ui
 
 from sqlalchemy.orm import Mapped, mapped_column
 
-from e_commerce.database import Base
+from e_commerce.connections import Base
 
 
 class Users(Base):

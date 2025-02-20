@@ -5,13 +5,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_cache.decorator import cache
 from sqlalchemy.exc import SQLAlchemyError
 
-from e_commerce.database import session_getter
+from e_commerce.connections import session_getter
 from e_commerce.repositories.usersInfoRepository import UserInfoRepository
 from e_commerce.schemas import usersInfoSchemas as uiS
 from e_commerce.exceptions import SQLExc
 from e_commerce.dependencies.logger import logger_add_info
 from e_commerce.models.usersModel import Users
 from e_commerce.dependencies import users as uD
+from e_commerce.tasks.tasks import send_confirmation_email
 
 users_info_router = APIRouter(prefix="/usersinfo", tags=["Users Info"])
 
@@ -56,6 +57,9 @@ async def update_user_info(
 
     await UserInfoRepository.update(connection, user.id, **new_data.model_dump())
     await connection.commit()
+
+    if new_data.email:
+        send_confirmation_email.delay(new_data.email)
 
     return {"message": "success"}
 

@@ -1,6 +1,6 @@
 import pytest
 
-from e_commerce.database import async_session_maker
+from e_commerce.connections import async_session_maker
 from e_commerce.repositories.usersRepository import UsersRepository
 
 

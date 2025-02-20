@@ -2,6 +2,7 @@
 
 sudo docker stop db
 sudo docker stop redis
+sudo docker stop broker
 
 sudo systemctl stop docker.socket docker.service
 

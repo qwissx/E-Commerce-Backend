@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, status, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from e_commerce.schemas import usersSchemas as uS
-from e_commerce.database import session_getter
+from e_commerce.connections import session_getter
 from e_commerce.repositories.usersRepository import UsersRepository
 from e_commerce.repositories.usersInfoRepository import UserInfoRepository
 from e_commerce.dependencies import auth as aD

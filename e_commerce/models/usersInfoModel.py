@@ -3,7 +3,7 @@ import uuid as ui
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import ForeignKey
 
-from e_commerce.database import Base
+from e_commerce.connections import Base
 
 
 class UsersInfo(Base):
