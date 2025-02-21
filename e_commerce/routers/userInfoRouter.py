@@ -2,7 +2,6 @@ import uuid as ui
 
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi_cache.decorator import cache
 from sqlalchemy.exc import SQLAlchemyError
 
 from e_commerce.connections import session_getter
@@ -33,7 +32,7 @@ async def create_user_info(
 
 
 @users_info_router.get(path="/")
-@cache(expire=60)
+# @cache(expire=60)
 async def get_user_info(
     user: Users = Depends(uD.get_current_user), 
     connection: AsyncSession = Depends(session_getter),

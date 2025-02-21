@@ -3,7 +3,6 @@ import uuid as ui
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError
-from fastapi_cache.decorator import cache
 
 from e_commerce.connections import session_getter
 from e_commerce.repositories.boxesRepository import BoxesRepository

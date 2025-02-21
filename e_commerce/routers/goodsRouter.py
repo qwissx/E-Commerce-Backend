@@ -2,7 +2,6 @@ import uuid as ui
 
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi_cache.decorator import cache
 from sqlalchemy.exc import SQLAlchemyError
 
 from e_commerce.connections import session_getter
@@ -13,6 +12,7 @@ from e_commerce.dependencies.logger import logger_add_info
 from e_commerce.exceptions import SQLExc
 from e_commerce.models.usersModel import Users
 from e_commerce.dependencies import users as uD
+from e_commerce.dependencies import cache as cD
 
 goods_router = APIRouter(prefix="/goods", tags=["Goods"])  
 
@@ -32,8 +32,8 @@ async def create_good(
     return {"message": "good was added successfully", "good_id": str(good_id)}
 
 
-@goods_router.get(path="/one/{good_id}/")
-@cache(expire=60)
+@goods_router.get(path="/{good_id}/")
+# @cache(expire=60)
 async def get_good(
     good_id: ui.UUID,
     connection: AsyncSession = Depends(session_getter),
@@ -47,16 +47,23 @@ async def get_good(
 
 
 @goods_router.get(path="/all")
-@cache(expire=60)
-async def get_all_goods(
+# @cache(expire=60)
+async def get_pagination_goods(
+    offset: int,
+    limit: int,
     user: Users = Depends(uD.get_current_user),
     connection: AsyncSession = Depends(session_getter),
-) -> list[gS.SGoodDisplay]:
-    goods = await GoodsRepository.get_all(connection)
+) -> gS.SGoodPagination:
+    
+
     if not goods:
         raise SQLExc.CannotFindAnyGood
 
-    return goods
+    return {
+        "goods": goods,
+        "total_count": 1,
+        "current_count": 1,
+    }
 
 # на правах админа
 @goods_router.delete(path="/{good_id}/")

@@ -14,7 +14,7 @@ templates = Jinja2Templates(directory="e_commerce/templates")
 @pages_router.get(path="/goods", response_class=HTMLResponse)
 async def get_goods_page(
     request: Request,
-    goods=Depends(gR.get_all_goods)
+    goods=Depends(gR.get_pagination_goods)
 ):
     return templates.TemplateResponse(
         name="goods.html", 

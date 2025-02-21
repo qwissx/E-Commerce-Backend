@@ -11,10 +11,9 @@ from e_commerce.routers import imagesRouter as iR
 from e_commerce.routers import authRouter as aR
 from e_commerce.routers import userInfoRouter as uiR
 from e_commerce.logger import logger
-from e_commerce.connections import lifespan
 
 
-api = FastAPI(docs_url="/", lifespan=lifespan)
+api = FastAPI(docs_url="/")
 
 
 api.mount("/static", StaticFiles(directory="e_commerce/static"), "static")
