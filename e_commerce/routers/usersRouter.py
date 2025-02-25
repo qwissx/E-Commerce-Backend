@@ -6,6 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from e_commerce.connections import session_getter
 from e_commerce.repositories.usersRepository import UsersRepository
+from e_commerce.cache.cacheService import Cache
 from e_commerce.schemas import usersSchemas as uS
 from e_commerce.exceptions import SQLExc
 from e_commerce.dependencies.logger import logger_add_info
@@ -21,8 +22,6 @@ async def create_user(
     user_data: uS.SUserCreate,
     connection: AsyncSession = Depends(session_getter),
 ) -> dict[str, str]:
-    user_data = update_data(**user_data.model_dump())
-
     try:
         await UsersRepository.add(connection, **user_data)
     except SQLAlchemyError as e:
@@ -33,20 +32,15 @@ async def create_user(
     return {"message": "user was added successfully"}
 
 
-@users_router.get(path="/")
+@users_router.get(path="/me")
 async def get_user(
     user: Users = Depends(uD.get_current_user), 
     connection: AsyncSession = Depends(session_getter),
-) -> uS.SUserDisplay:
-    user = await UsersRepository.get(connection, id=user.id)
-    if not user:
-        logger_add_info(get_user.__name__, user_id=user_id)
-        raise SQLExc.CannotFindUser
-        
+) -> uS.SUserDisplay:     
     return user
 
 
-@users_router.delete(path="/")
+@users_router.delete(path="/me")
 async def user_del_himself(
     user: Users = Depends(uD.get_current_user), 
     connection: AsyncSession = Depends(session_getter),
@@ -57,6 +51,7 @@ async def user_del_himself(
 
     await uiR.del_user_info(user.id, connection) # вернуться
     await UsersRepository.rem(connection, id=user.id)
+    await Cache.rem("user", user.id)
 
     await connection.commit()
     return {"message": "user was successfully deleted"}
@@ -73,6 +68,7 @@ async def user_del(
 
     await uiR.del_user_info(user_id, connection) # вернуться
     await UsersRepository.rem(connection, id=user_id)
+    await Cache.rem("user", user_id)
 
     await connection.commit()
     return {"message": "user was successfully deleted"}

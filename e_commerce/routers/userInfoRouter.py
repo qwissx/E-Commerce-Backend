@@ -11,6 +11,7 @@ from e_commerce.exceptions import SQLExc
 from e_commerce.dependencies.logger import logger_add_info
 from e_commerce.models.usersModel import Users
 from e_commerce.dependencies import users as uD
+from e_commerce.cache.cacheService import Cache
 from e_commerce.tasks.tasks import send_confirmation_email
 
 users_info_router = APIRouter(prefix="/usersinfo", tags=["Users Info"])
@@ -22,7 +23,7 @@ async def create_user_info(
     connection: AsyncSession = Depends(session_getter),
 ) -> dict[str, str]:
     try:
-        await UsersRepository.add(connection, **user_data.model_dump())
+        await UserInfoRepository.add(connection, **user_info.model_dump())
     except SQLAlchemyError as e:
         logger_add_info(create_user_info.__name__, **user_info.model_dump())
         raise SQLExc.CannotAddUserInfo
@@ -32,12 +33,16 @@ async def create_user_info(
 
 
 @users_info_router.get(path="/")
-# @cache(expire=60)
 async def get_user_info(
     user: Users = Depends(uD.get_current_user), 
     connection: AsyncSession = Depends(session_getter),
 ) -> uiS.SUserInfoDisplay:
-    user_info = await UserInfoRepository.get(connection, user_id=user.id)
+    user_info = await Cache.get(
+        "userInfo", 
+        user.id, 
+        UserInfoRepository, 
+        connection,
+    )
     if not user_info:
         raise SQLExc.CannotFindUserInfo
 
@@ -55,6 +60,10 @@ async def update_user_info(
         raise SQLExc.CannotDeleteUserInfo 
 
     await UserInfoRepository.update(connection, user.id, **new_data.model_dump())
+
+    await Cache.rem("userInfo", user.id)
+    await Cache.add("userInfo", user.id, id=user.id, **new_data.model_dump())
+
     await connection.commit()
 
     if new_data.email:

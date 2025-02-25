@@ -10,8 +10,9 @@ from e_commerce import settings as st
 from e_commerce.dependencies.auth import get_password_hash, check_access_token
 from e_commerce.repositories.usersRepository import UsersRepository
 from e_commerce.connections import session_getter
-from e_commerce.dependencies import cache as cD
+from e_commerce.cache.cacheService import Cache
 from e_commerce.schemas import usersSchemas as uS
+from e_commerce.models.usersModel import Users
 
 
 def update_data(**data):
@@ -39,26 +40,13 @@ async def get_current_user(
 
     check_access_token(payload)
 
-    user = await cD.check_cache("user", payload.get("sub"))
-    if user:
-        return uS.SUserDisplay(
-            id=UUID(user.get("id")),
-            username=str(user.get("username")),
-            password=str(user.get("password")),
-        )
+    user = await Cache.get("user", payload.get("sub"), UsersRepository, connection)
 
-    user = await UsersRepository.get(connection, id=payload.get("sub"))
-
-    try:
-        await cD.add_cache(
-            "user", 
-            payload.get("sub"), 
-            id=str(user.id), 
-            username=user.username, 
-            password=user.password
-        )
-    except AttributeError:
+    if not user:
         raise AuthExc.UserDoesNotExist
+
+    if isinstance(user, dict):
+        user = Users(**user)
 
     return user
     

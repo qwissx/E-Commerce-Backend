@@ -9,8 +9,13 @@ class GoodsRepository(mR.MixinRepository):
     model_name = gM.Goods
 
     @classmethod
-    async def get_all(cls, connection: AsyncSession, limit=10) -> list[gM.Goods]:
-        query = select(cls.model_name).limit(limit)
+    async def get_pagination(
+        cls, 
+        connection: AsyncSession, 
+        offset=None, 
+        limit=None,
+    ) -> list[gM.Goods]:
+        query = select(cls.model_name).limit(limit).offset(offset)
         goods = await connection.execute(query)
         return goods.scalars().all()
     

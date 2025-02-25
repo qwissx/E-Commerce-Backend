@@ -17,7 +17,7 @@ class SQLExc:
     CannotFindAnyGood = HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="Cannot find all goods")
 
     CannotAddUserInfo = HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Cannot add user info")
-    CannotFindUserInfo = HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="Cannot find your data")
+    CannotFindUserInfo = HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Cannot find your data")
     CannotDeleteUserInfo = HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Cannot delete your data")
 
 
