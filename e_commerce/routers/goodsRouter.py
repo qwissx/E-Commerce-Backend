@@ -39,15 +39,24 @@ async def get_pagination_goods(
     user: Users = Depends(uD.get_current_user),
     connection: AsyncSession = Depends(session_getter),
 ) -> gS.SGoodPagination:
-    
+    goods = await Cache.get(
+        "good", 
+        "pagination", 
+        GoodsRepository, 
+        connection, 
+        offset=offset, 
+        limit=limit
+    )
 
     if not goods:
         raise SQLExc.CannotFindAnyGood
 
+    total_count = await GoodsRepository.count(connection)
+
     return {
         "goods": goods,
-        "total_count": 1,
-        "current_count": 1,
+        "total_count": total_count,
+        "current_count": min((limit or 0) + (offset or 0), total_count),
     }
 
 

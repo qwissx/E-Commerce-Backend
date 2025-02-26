@@ -71,7 +71,7 @@ async def update_user_info(
 
     return {"message": "success"}
 
-
+# на правах админа
 @users_info_router.delete(path="/{user_id}")
 async def del_user_info(
     user_id: ui.UUID,
@@ -82,6 +82,7 @@ async def del_user_info(
         raise SQLExc.CannotDeleteUserInfo
 
     await UserInfoRepository.rem(connection, user_id=user_id)
+    await Cache.rem("userInfo", user_id)
     await connection.commit()
 
     return {"message": "user was successfully deleted"}

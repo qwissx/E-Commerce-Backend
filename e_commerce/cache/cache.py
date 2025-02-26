@@ -32,11 +32,12 @@ async def check_cache_list(val_key, offset, limit):
     return serialized_values
 
 
-async def add_cache_list(val_key, exp=60, **kwargs):
-    serialized_value = json.dumps(kwargs)
-    await redis.rpush(val_key, serialized_user)
+async def add_cache_list(val_key, values: list, exp=60):
+    for value in values:
+        serialized_value = json.dumps(value)
+        await redis.rpush(val_key, serialized_value)
 
-    await redis.expire(val_key, exp)
+        await redis.expire(val_key, exp)
 
 
 async def remove_cache(val_key):

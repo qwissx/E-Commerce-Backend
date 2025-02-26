@@ -1,6 +1,6 @@
 import uuid as ui
 
-from sqlalchemy import delete, insert, select
+from sqlalchemy import delete, insert, select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from e_commerce.repositories import baseRepository as bR
@@ -26,4 +26,10 @@ class MixinRepository(bR.BaseRepository):
     async def rem(cls, connection: AsyncSession, **filter_by) -> None:
         query = delete(cls.model_name).filter_by(**filter_by)
         await connection.execute(query)
+
+    @classmethod
+    async def count(cls, connection: AsyncSession, **filter_by) -> int:
+        query = select(func.count()).select_from(cls.model_name).filter_by(**filter_by)
+        result = await connection.execute(query)
+        return result.scalar_one()
         

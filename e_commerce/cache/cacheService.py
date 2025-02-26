@@ -99,7 +99,7 @@ class Cache:
 
                 values_dict.append(value)
 
-            await cD.add_cache_list(val_key, *values_dict)
+            await cD.add_cache_list(val_key, values_dict)
 
         return values
     
