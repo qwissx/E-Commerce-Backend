@@ -26,6 +26,7 @@ dependencies = [
     "python-jose (>=3.3.0,<4.0.0)",
     "pydantic[email] (>=2.10.6,<3.0.0)",
     "celery (>=5.4.0,<6.0.0)",
+    "sqladmin (>=0.20.1,<0.21.0)",
 ]
 
 

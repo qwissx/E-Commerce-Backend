@@ -40,7 +40,13 @@ async def get_current_user(
 
     check_access_token(payload)
 
-    user = await Cache.get("user", payload.get("sub"), UsersRepository, connection)
+    user = await Cache.get(
+        "user", 
+        payload.get("sub"), 
+        UsersRepository, 
+        connection, 
+        id=payload.get("sub")
+    )
 
     if not user:
         raise AuthExc.UserDoesNotExist

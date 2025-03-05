@@ -6,9 +6,6 @@ from fastapi import FastAPI
 from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
-# from fastapi_cache import FastAPICache
-# from fastapi_cache.backends.redis import RedisBackend
-# from fastapi_cache.decorator import cache
 from redis import asyncio as aioredis
 from redis.asyncio import Redis
 from celery import Celery
@@ -28,13 +25,6 @@ class Base(DeclarativeBase):
 async def session_getter() -> AsyncGenerator[AsyncSession, None]:
     async with async_session_maker() as session:
         yield session
-
-
-# @asynccontextmanager
-# async def lifespan(_: FastAPI) -> AsyncIterator[None]:
-#     redis = aioredis.from_url(st.redis_url)
-#     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
-#     yield
 
 
 redis = Redis(host=st.redis_host, port=st.redis_port, db=0)

@@ -1,8 +1,16 @@
 import time
 
+from sqladmin import Admin
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 
+from e_commerce.admin.views import (
+    UsersAdmin,
+    GoodsAdmin,
+    UsersInfoAdmin,
+)
+from e_commerce.admin.auth import authentication_backend
+from e_commerce.connections import engine
 from e_commerce.routers import usersRouter as uR
 from e_commerce.routers import boxesRouter as bR
 from e_commerce.routers import goodsRouter as gR
@@ -18,6 +26,13 @@ from fastapi.openapi.docs import (
 
 
 api = FastAPI(docs_url=None)
+
+
+admin = Admin(api, engine, authentication_backend=authentication_backend)
+
+admin.add_view(UsersAdmin)
+admin.add_view(GoodsAdmin)
+admin.add_view(UsersInfoAdmin)
 
 
 api.mount("/static", StaticFiles(directory="e_commerce/static"), "static")
@@ -43,12 +58,12 @@ async def custom_swagger_ui_html():
     )
 
 
-@api.middleware("http")
-async def add_process_time_heade(request: Request, call_next):
-    start_time = time.time()
-    response = await call_next(request)
-    process_time = time.time() - start_time
-    logger.info("Request execution time", extra={
-        "process_time": round(process_time, 4)
-    })
-    return response
+# @api.middleware("http")
+# async def add_process_time_heade(request: Request, call_next):
+#     start_time = time.time()
+#     response = await call_next(request)
+#     process_time = time.time() - start_time
+#     logger.info("Request execution time", extra={
+#         "process_time": round(process_time, 4)
+#     })
+#     return response
